@@ -24,15 +24,8 @@ public class WebSocketController {
             // 위도, 경도 주고받기
         }
 
-        // 상대방에게 알람 보내기
-        chatService.sendNotification(SenderInfoDto.builder()
-                .senderId(request.getSenderId())
-                .message(request.getMessage())
-                .roomId(request.getRoomId())
-                .build());
-
         // topic-1대다, queue-1대1
-        sendingOperations.convertAndSend("/topic/chat/room/" + roomId, request);
+        sendingOperations.convertAndSend("/queue/chat/room/" + roomId, request);
         return OK(null);
     }
 }
