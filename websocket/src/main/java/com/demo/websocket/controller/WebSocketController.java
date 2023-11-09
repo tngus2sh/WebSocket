@@ -19,6 +19,7 @@ public class WebSocketController {
     @SendTo("/topic/chat")
     public ResponseEntity<Void> enter(ChatMessageReq request) {
         log.info("[WEBSOCKET] start");
+        log.info(request.toString());
         String roomId = request.getRoomId();
         if (ChatMessageReq.MessageType.ENTER.equals(request.getType())) {
             request.setMessage(request.getSenderId() + "님이 입장하셨습니다.");
