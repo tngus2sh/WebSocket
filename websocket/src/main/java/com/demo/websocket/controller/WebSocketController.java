@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,10 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class WebSocketController {
 
     private final SimpMessageSendingOperations sendingOperations;
-//    private final ChatService chatService;
 
     @MessageMapping("/chat/message")
     public ResponseEntity<Void> enter(ChatMessageReq request) {
+        log.info("[WEBSOCKET] start");
+        log.info(request.toString());
         String roomId = request.getRoomId();
         if (ChatMessageReq.MessageType.ENTER.equals(request.getType())) {
             request.setMessage(request.getSenderId() + "님이 입장하셨습니다.");
@@ -25,7 +27,7 @@ public class WebSocketController {
         }
 
         // topic-1대다, queue-1대1
-        sendingOperations.convertAndSend("/queue/chat/room/" + roomId, request);
-        return new ResponseEntity<>(null);
+        sendingOperations.convertAndSend("/topic/chat/room/" + roomId, request);
+        return ResponseEntity.ok(null);
     }
 }

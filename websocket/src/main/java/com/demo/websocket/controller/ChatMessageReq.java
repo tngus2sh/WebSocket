@@ -20,6 +20,8 @@ public class ChatMessageReq {
     // 내용
     private String message;
     private String roomId;
+    private Double latitude;
+    private Double longitude;
 
 
 }
