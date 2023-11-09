@@ -26,6 +26,6 @@ public class WebSocketController {
 
         // topic-1대다, queue-1대1
         sendingOperations.convertAndSend("/queue/chat/room/" + roomId, request);
-        return OK(null);
+        return new ResponseEntity<>(null);
     }
 }
